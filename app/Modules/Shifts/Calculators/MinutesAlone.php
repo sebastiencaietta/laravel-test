@@ -8,5 +8,7 @@ class MinutesAlone implements Calculator
 {
     public function calculate(Collection $shifts)
     {
+        $total = 0;
+        return $total;
     }
 }
