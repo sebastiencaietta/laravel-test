@@ -1,10 +1,10 @@
-# Shopworks Code Test
+# Laravel Test
 
 ## Installation
 
 Clone repository
 
-`git clone -v git@github.com:sebastiencaietta/shopworks`
+`git clone -v git@github.com:sebastiencaietta/laravel-test`
 
 Install composer dependencies
 
