@@ -24,17 +24,17 @@ class MinutesAlone implements Calculator
         return [$dateStart, $dateEnd];
     }
 
-    public function testGetAloneTimeFrames($timeframeA, $timeframeB): array
+    public function getAloneTimeFrames($timeframeA, $timeframeB): array
     {
         list($startA, $endA) = $timeframeA;
         list($startB, $endB) = $timeframeB;
 
         if ($startA > $endB || $endA < $startB) { //If the dates don't overlap, A worked without B the whole time
-            return $timeframeA;
+            return [$timeframeA];
         }
 
         //B worked before and after A or the same time as A, so A never worked alone during this timeframe
-        if ($startB < $startA && $endB > $endA || ($startA == $startB && $endA == $endB)) {
+        if ($startB <= $startA && $endB >= $endA || ($startA == $startB && $endA == $endB)) {
             return [];
         }
 

@@ -37,6 +37,16 @@ class MinutesAloneTest extends TestCase
                 [[new DateTime('12:00:00'), new DateTime('15:00:00')]],
             ],
             [
+                [new DateTime('12:00:00'), new DateTime('19:00:00')],
+                [new DateTime('20:00:00'), new DateTime('22:00:00')],
+                [[new DateTime('12:00:00'), new DateTime('19:00:00')]],
+            ],
+            [
+                [new DateTime('13:00:00'), new DateTime('20:00:00')],
+                [new DateTime('19:00:00'), (new DateTime('03:00:00'))->modify('+1 day')],
+                [[new DateTime('13:00:00'), new DateTime('19:00:00')]],
+            ],
+            [
                 [new DateTime('15:00:00'), new DateTime('17:00:00')],
                 [new DateTime('14:00:00'), new DateTime('18:00:00')],
                 [],
@@ -55,7 +65,12 @@ class MinutesAloneTest extends TestCase
                 [new DateTime('12:00:00'), new DateTime('19:00:00')],
                 [new DateTime('14:00:00'), new DateTime('16:00:00')],
                 [[new DateTime('12:00:00'), new DateTime('14:00:00')], [new DateTime('16:00:00'), new DateTime('19:00:00')]],
-            ]
+            ],
+            [
+                [new DateTime('13:00:00'), new DateTime('19:00:00')],
+                [new DateTime('11:00:00'), new DateTime('19:00:00')],
+                [],
+            ],
         ];
     }
 
