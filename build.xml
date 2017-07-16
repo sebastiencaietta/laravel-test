@@ -28,12 +28,20 @@
     <!-- (DEFAULT) Target: build                       -->
     <!-- ============================================  -->
     <target name="install">
-
+        <property name="withDb" value="true"/>
         <tstamp/>
 
         <phingcall target="generateKey"/>
         <phingcall target="clearConfigCache"/>
-        <phingcall target="setupDb"/>
+
+        <echo message="WithDB = ${withDb}"/>
+        <if>
+            <equals arg1="${withDb}" arg2="1"/>
+            <then>
+                <phingcall target="setupDb"/>
+            </then>
+        </if>
+
         <phingcall target="serve"/>
 
     </target>
