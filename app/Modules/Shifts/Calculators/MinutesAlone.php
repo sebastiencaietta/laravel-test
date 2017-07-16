@@ -13,7 +13,6 @@ class MinutesAlone implements Calculator
         $total = 0;
 
         /** @var Shift $shiftA */
-        /** @var Shift $shiftB */
         foreach ($shifts as $shiftA) {
             $timeframeA = $this->getTimeFrameFromStrings($shiftA->getStartTime(), $shiftA->getEndTime());
             $timeframesWorkedAlone = [$timeframeA];
@@ -30,6 +29,7 @@ class MinutesAlone implements Calculator
 
     public function compareOriginalWithOtherShifts(Shift $originalShift, array $timeframes, Collection $shifts): array
     {
+        /** @var Shift $shiftB */
         foreach ($shifts as $shiftB) {
             if ($originalShift === $shiftB) {
                 continue;
