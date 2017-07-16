@@ -113,6 +113,35 @@ class MinutesAloneTest extends TestCase
         ];
     }
 
+    public function testCalculate()
+    {
+        $mockBuilder = $this->getMockBuilder(Shift::class)->disableOriginalConstructor()->setMethods([
+            'getStartTime',
+            'getEndTime'
+        ]);
+        $shift1 = $mockBuilder->getMock();
+        $shift1->expects($this->any())->method('getStartTime')->willReturn('12:00:00');
+        $shift1->expects($this->any())->method('getEndTime')->willReturn('19:00:00');
+
+        $shift2 = $mockBuilder->getMock();
+        $shift2->expects($this->any())->method('getStartTime')->willReturn('11:30:00');
+        $shift2->expects($this->any())->method('getEndTime')->willReturn('19:00:00');
+
+        $shift3 = $mockBuilder->getMock();
+        $shift3->expects($this->any())->method('getStartTime')->willReturn('19:00:00');
+        $shift3->expects($this->any())->method('getEndTime')->willReturn('03:00:00');
+
+        $shift4 = $mockBuilder->getMock();
+        $shift4->expects($this->any())->method('getStartTime')->willReturn('20:00:00');
+        $shift4->expects($this->any())->method('getEndTime')->willReturn('03:00:00');
+        $shifts = new Collection([$shift1, $shift2, $shift3, $shift4]);
+
+        $calculator = new MinutesAlone();
+        $result = $calculator->calculate($shifts);
+
+        $this->assertEquals(90, $result);
+    }
+
     /**
      * @dataProvider aloneTimeFrameProvider
      * @param array $timeframeA
@@ -122,7 +151,7 @@ class MinutesAloneTest extends TestCase
     public function testGetAloneTimeFrames(array $timeframeA, array $timeframeB, array $expected)
     {
         $calculator = new MinutesAlone();
-        $result = $calculator->testGetAloneTimeFrames($timeframeA, $timeframeB);
+        $result = $calculator->getAloneTimeFrames($timeframeA, $timeframeB);
         $this->assertEquals($expected, $result);
     }
 

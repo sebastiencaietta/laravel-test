@@ -2,14 +2,38 @@
 
 namespace App\Modules\Shifts\Calculators;
 
+use App\Modules\Shifts\Entities\Shift;
 use DateTime;
 use Illuminate\Support\Collection;
 
 class MinutesAlone implements Calculator
 {
-    public function calculate(Collection $shifts)
+    public function calculate(Collection $shifts): float
     {
         $total = 0;
+
+        /** @var Shift $shiftA */
+        /** @var Shift $shiftB */
+        foreach ($shifts as $shiftA) {
+            $timeframeA = $this->getTimeFrameFromStrings($shiftA->getStartTime(), $shiftA->getEndTime());
+            $timeframesA = [$timeframeA];
+            
+            foreach ($shifts as $shiftB) {
+                if ($shiftA === $shiftB || $timeframesA === []) {
+                    continue;
+                }
+                $timeframeB = $this->getTimeFrameFromStrings($shiftB->getStartTime(), $shiftB->getEndTime());
+
+                foreach ($timeframesA as $timeframeA) {
+                    $timeframesA = $this->getAloneTimeFrames($timeframeA, $timeframeB);
+                }
+            }
+            if ($timeframesA === []) {
+                continue;
+            }
+            $total += $this->getMinutesWorkedAlone($timeframesA);
+        }
+
         return $total;
     }
 

@@ -59,7 +59,7 @@ class WorkDay
         return $this->totalHours;
     }
 
-    public function getMinutesWorkedAlone(): int
+    public function getMinutesWorkedAlone(): float
     {
         if (!is_null($this->minutesWorkedAlone)) {
             return $this->minutesWorkedAlone;
