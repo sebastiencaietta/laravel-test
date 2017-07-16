@@ -49,4 +49,15 @@ class MinutesAlone implements Calculator
             return [[$startA, $startB]];
         }
     }
+
+    public function getMinutesWorkedAlone(array $timeframes): float
+    {
+        $total = 0;
+        foreach ($timeframes as $timeframe) {
+            list($start, $end) = $timeframe;
+            $secondsWorkedAlone = $end->getTimestamp() - $start->getTimestamp();
+            $total += $secondsWorkedAlone / 60;
+        }
+        return $total;
+    }
 }

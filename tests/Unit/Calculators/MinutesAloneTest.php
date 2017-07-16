@@ -80,6 +80,24 @@ class MinutesAloneTest extends TestCase
         ];
     }
 
+    public function minutesWorkedAloneProvider()
+    {
+        return [
+            [
+                [[new DateTime('12:00:00'), new DateTime('12:05:00')]],
+                5
+            ],
+            [
+                [[new DateTime('12:00:00'), new DateTime('13:00:00')], [new DateTime('15:00:00'), new DateTime('16:00:00')]],
+                120
+            ],
+            [
+                [[new DateTime('12:00:00'), new DateTime('12:00:30')]],
+                0.5
+            ],
+        ];
+    }
+
     /**
      * @dataProvider aloneTimeFrameProvider
      * @param array $timeframeA
@@ -103,6 +121,18 @@ class MinutesAloneTest extends TestCase
     {
         $calculator = new MinutesAlone();
         $result = $calculator->getTimeFrameFromStrings($start, $end);
+        $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * @dataProvider minutesWorkedAloneProvider
+     * @param array $timeframes
+     * @param $expected
+     */
+    public function testGetMinutesWorkedAlone(array $timeframes, $expected)
+    {
+        $calculator = new MinutesAlone();
+        $result = $calculator->getMinutesWorkedAlone($timeframes);
         $this->assertEquals($expected, $result);
     }
 }
