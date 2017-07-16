@@ -1,6 +1,6 @@
-#Shopworks Code Test
+# Shopworks Code Test
 
-##Installation
+## Installation
 
 Clone repository
 
