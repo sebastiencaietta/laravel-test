@@ -16,25 +16,34 @@ class MinutesAlone implements Calculator
         /** @var Shift $shiftB */
         foreach ($shifts as $shiftA) {
             $timeframeA = $this->getTimeFrameFromStrings($shiftA->getStartTime(), $shiftA->getEndTime());
-            $timeframesA = [$timeframeA];
-            
-            foreach ($shifts as $shiftB) {
-                if ($shiftA === $shiftB || $timeframesA === []) {
-                    continue;
-                }
-                $timeframeB = $this->getTimeFrameFromStrings($shiftB->getStartTime(), $shiftB->getEndTime());
+            $timeframesWorkedAlone = [$timeframeA];
 
-                foreach ($timeframesA as $timeframeA) {
-                    $timeframesA = $this->getAloneTimeFrames($timeframeA, $timeframeB);
-                }
-            }
-            if ($timeframesA === []) {
+            $timeframesWorkedAlone = $this->compareOriginalWithOtherShifts($shiftA, $timeframesWorkedAlone, $shifts);
+            if ($timeframesWorkedAlone === []) {
                 continue;
             }
-            $total += $this->getMinutesWorkedAlone($timeframesA);
+            $total += $this->getMinutesWorkedAlone($timeframesWorkedAlone);
         }
 
         return $total;
+    }
+
+    public function compareOriginalWithOtherShifts(Shift $originalShift, array $timeframes, Collection $shifts): array
+    {
+        foreach ($shifts as $shiftB) {
+            if ($originalShift === $shiftB) {
+                continue;
+            }
+            $timeframeB = $this->getTimeFrameFromStrings($shiftB->getStartTime(), $shiftB->getEndTime());
+
+            foreach ($timeframes as $timeframeA) {
+                $timeframes = $this->getAloneTimeFrames($timeframeA, $timeframeB);
+            }
+            if ($timeframes === []) {
+                return [];
+            }
+        }
+        return $timeframes;
     }
 
     public function getTimeFrameFromStrings($start, $end): array
